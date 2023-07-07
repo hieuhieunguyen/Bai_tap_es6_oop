@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Quản lý sản phẩm</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/css/bootstrap.min.css"
+      integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+      crossorigin="anonymous"
+    />
+    <!-- my css -->
+    <link rel="stylesheet" href="./css/index.css" />
+    <style>
+      #general-form {
+        display: none;
+      }
+      #sinh-vien {
+        display: none;
+      }
+      #khach-hang {
+        display: none;
+      }
+      #nhan-vien {
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <nav class="navbar navbar-expand-sm navbar-dark bg-primary">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <button
+          class="navbar-toggler d-lg-none"
+          type="button"
+          data-toggle="collapse"
+          data-target="#collapsibleNavId"
+          aria-controls="collapsibleNavId"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        ></button>
+        <div class="collapse navbar-collapse" id="collapsibleNavId">
+          <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item active">
+              <a class="nav-link" href="#"
+                >Home <span class="sr-only">(current)</span></a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="dropdownId"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+                >Dropdown</a
+              >
+              <div class="dropdown-menu" aria-labelledby="dropdownId">
+                <a class="dropdown-item" href="#">Action 1</a>
+                <a class="dropdown-item" href="#">Action 2</a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <header class="display-4 my-4">Thực hành javascript - axios</header>
+      <!-- Phan tab menu -->
+      <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+          <a
+            class="nav-link active"
+            href="#DanhSachSP"
+            role="tab"
+            data-toggle="tab"
+            >Danh sách sản phẩm</a
+          >
+        </li>
+      </ul>
+      <br />
+      <!-- Tab panes -->
+      <div class="tab-content">
+        <!--Danh sách sản phẩm -->
+        <div role="tabpanel" class="tab-pane in active" id="DanhSachSP">
+          <div class="row">
+            <div class="col-md-4">
+              <!-- BEGIN BUTTOM THÊM MỚI -->
+              <button
+                onclick="resetForm()"
+                id="btnThemSP"
+                class="btn btn-success"
+                data-toggle="modal"
+                data-target="#myModal"
+              >
+                <i class="fa fa-plus mr-1"></i>
+                Thêm Mới
+              </button>
+              <!-- END BUTTON THÊM MỚI -->
+            </div>
+            <div class="col-md-4">
+              <div class="dropdown">
+                <button
+                  class="btn btn-secondary dropdown-toggle"
+                  type="button"
+                  id="dropdownMenuButton"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  Sắp xếp theo thứ tự họ tên
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <div
+                    onclick="sapXepTheoThuTuHo()"
+                    style="cursor: pointer"
+                    class="dropdown-item"
+                  >
+                    Sắp xếp theo thứ tự họ
+                  </div>
+                  <div
+                    onclick="sapXepTheoThuTuTen()"
+                    style="cursor: pointer"
+                    class="dropdown-item"
+                  >
+                    Sắp xếp theo thứ tự tên
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <!-- BEGIN TÌM KIẾM -->
+              <div class="input-group mb-3">
+                <input
+                  id="value-input-search"
+                  type="text"
+                  class="form-control"
+                  placeholder="Nhập từ khóa"
+                  aria-label="Recipient's username"
+                  aria-describedby="basic-addon2"
+                />
+                <div onclick="timKiemTheoLoaiND()" class="input-group-append">
+                  <span class="input-group-text" id="basic-addon2"
+                    ><i class="fa fa-search"></i
+                  ></span>
+                </div>
+              </div>
+              <!-- END TÌM KIẾM -->
+            </div>
+          </div>
+          <div class="clear-fix"></div>
+          <div class="tblSanPham" id="tblSanPham">
+            <!-- BEGIN TABLE SẢN PHẨM -->
+            <table class="table table-bordered">
+              <thead>
+                <th>Mã</th>
+                <th>Họ và tên</th>
+                <th>Địa chỉ</th>
+                <th>Email</th>
+                <th>Loại</th>
+                <th>Điểm TB</th>
+                <th>Lương</th>
+                <th>Action</th>
+              </thead>
+              <tbody id="tblDanhSachND"></tbody>
+            </table>
+            <!-- END TABLE SẢN PHẨM -->
+          </div>
+          <br />
+        </div>
+        <!-- Kết thúc danh sách sản phẩm -->
+      </div>
+
+      <!--KetThuc Tabmenu-->
+
+      <!-- The Modal -->
+      <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">
+                Form điền thông tin <span id="span-dien-form"></span>
+              </h4>
+              <button type="button" class="close" data-dismiss="modal">
+                &times;
+              </button>
+            </div>
+            <div>
+              <label class="mb-0 pl-3 mt-3 text-warning"
+                >Chọn đối tượng cần điền vào form và bấm xác nhận</label
+              >
+              <div class="modal-body d-flex pt-1">
+                <select class="custom-select" id="select-object">
+                  <option selected>Chọn đối tượng</option>
+                  <option value="1">Sinh viên</option>
+                  <option value="2">Nhân viên</option>
+                  <option value="3">Khách hàng</option>
+                </select>
+                <button
+                  onclick="hienTypeForm()"
+                  id="btn-xac-nhan"
+                  class="btn btn-primary ml-3"
+                >
+                  Xác nhận
+                </button>
+              </div>
+            </div>
+            <!-- Modal body -->
+            <form class="modal-body" id="modalBody">
+              <div id="general-form">
+                <div class="form-group">
+                  <label>Nhập họ tên</label>
+                  <input
+                    id="hoTen"
+                    class="form-control"
+                    placeholder="Nhập họ tên"
+                  />
+                </div>
+                <div class="form-group">
+                  <label>Địa chỉ</label>
+                  <input
+                    id="diaChi"
+                    class="form-control"
+                    placeholder="Nhập địa chỉ"
+                  />
+                </div>
+                <div class="form-group">
+                  <label>Mã</label>
+                  <input id="ma" class="form-control" placeholder="Nhập mã" />
+                  <span id="spanMa" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                  <label>Email</label>
+                  <input
+                    id="email"
+                    class="form-control"
+                    placeholder="Nhập Email"
+                  />
+                  <span id="spanEmail" class="text-danger"></span>
+                </div>
+              </div>
+              <div id="sinh-vien">
+                <div class="form-group">
+                  <label>Toán</label>
+                  <input
+                    id="diemToan"
+                    class="form-control"
+                    placeholder="Nhập điểm toán"
+                  />
+                  <span id="spanToan" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                  <label>Lý</label>
+                  <input
+                    id="diemLy"
+                    class="form-control"
+                    placeholder="Nhập điểm lý"
+                  />
+                  <span id="spanLy" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                  <label>Hóa</label>
+                  <input
+                    id="diemHoa"
+                    class="form-control"
+                    placeholder="Nhập điểm hóa"
+                  />
+                  <span id="spanHoa" class="text-danger"></span>
+                </div>
+              </div>
+              <div id="khach-hang">
+                <div class="form-group">
+                  <label>Tên công ty</label>
+                  <input
+                    id="tenCT"
+                    class="form-control"
+                    placeholder="Nhập tên công ty"
+                  />
+                </div>
+                <div class="form-group">
+                  <label>Trị giá hóa đơn</label>
+                  <input
+                    id="hoaDon"
+                    class="form-control"
+                    placeholder="Nhập trị giá hóa đơn"
+                  />
+                  <span id="spanHoaDon" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                  <label>Đánh giá</label>
+                  <input
+                    id="danhGia"
+                    class="form-control"
+                    placeholder="Nhập đánh giá"
+                  />
+                </div>
+              </div>
+              <div id="nhan-vien">
+                <div class="form-group">
+                  <label>Số ngày làm việc</label>
+                  <input
+                    id="soNgayLam"
+                    class="form-control"
+                    placeholder="Nhập số ngày làm việc"
+                  />
+                  <span id="spanSoNgayLam" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                  <label>Lương theo ngày</label>
+                  <input
+                    id="luong"
+                    class="form-control"
+                    placeholder="Nhập lương theo ngày"
+                  />
+                  <span id="spanLuong" class="text-danger"></span>
+                </div>
+              </div>
+            </form>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <button onclick="createPeson()" class="btn btn-success">
+                Thêm
+              </button>
+              <button onclick="updatePerson()" class="btn btn-success">
+                Cập nhật
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="container"></div>
+    <style>
+      #container {
+        min-width: 310px;
+        max-width: 800px;
+        height: 400px;
+        margin: 0 auto;
+      }
+    </style>
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/series-label.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <!-- axios -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"
+      integrity="sha512-uMtXmF28A2Ab/JJO2t/vYhlaa/3ahUOgj1Zf27M5rOo8/+fcTUVH0/E0ll68njmjrLqOBjXM3V9NiPFL5ywWPQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+
+    <!-- js -->
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>
